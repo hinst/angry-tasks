@@ -1,0 +1,19 @@
+{
+  "name": "angry-tasks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "electron": "^5.0.5",
+    "source-map-support": "^0.5.12",
+    "tsc": "^1.20150623.0",
+    "typescript": "^3.5.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
