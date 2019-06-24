@@ -1,4 +1,6 @@
 export class VueComponentObject {
+    /** This is mostly used for root ui component */
+    el: string;
     template: string;
     created: Function;
     props: string[] = [];
@@ -25,8 +27,11 @@ export function createVueComponent(instance: any) {
         else
             component.methods[funcKey] = proto[funcKey];
     }
-    component.template = instance.template;
+    if (instance.template)
+        component.template = instance.template;
     if (instance.mixins)
         component.mixins = instance.mixins;
+    if (instance.el)
+        component.el = instance.el;
     return component;
 }
