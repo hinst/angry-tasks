@@ -4,7 +4,7 @@
         "sourceRoot": "../src/",
         "module": "commonjs",
         "sourceMap": true,
-        "mapRoot": "../dist/dist",
+        "mapRoot": "../dist",
         "rootDir": "src",
         "outDir": "dist",
         "lib": ["es2015", "dom"]
