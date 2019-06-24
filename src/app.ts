@@ -3,6 +3,7 @@ import * as fs from 'fs';
 
 import * as Vue from 'vue/dist/vue.common.js';
 import { createVueComponent } from './vue';
+import './taskListViewer';
 
 class AppComponent {
     el = '#app';
