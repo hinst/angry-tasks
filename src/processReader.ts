@@ -9,7 +9,7 @@ class Process {
     children: Process[];
 }
 
-class ProcessInfo {
+export class ProcessInfo {
     ProcessId: number = 0;
     Name: string = '';
     ParentProcessId: number = 0;
