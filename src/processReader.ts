@@ -29,7 +29,13 @@ class BaseProcessInfoColumns {
 const baseProcessInfoColumnsKeys = Object.keys(new BaseProcessInfoColumns());
 
 class ProcessInfoColumns extends BaseProcessInfoColumns {
-    parseInfo(rowText: string) {
+    parseHeader(csvRowText: string) {
+        const cells = csvRowText.split(',');
+        for (const key of baseProcessInfoColumnsKeys) {
+            this[key] = cells.indexOf(key);
+        }
+    }
+    parseRow(rowText: string) {
         const cells = rowText.split(',');
         const info = new ProcessInfo();
         info.ProcessId = parseInt(cells[this.ProcessId]);
@@ -52,21 +58,13 @@ function simpleExec(command: string): Promise<string> {
     });
 }
 
-function parseProcessInfoHeader(csvRowText: string) {
-    const cells = csvRowText.split(',');
-    const columns = new ProcessInfoColumns();
-    for (const key of baseProcessInfoColumnsKeys) {
-        columns[key] = cells.indexOf(key);
-    }
-    return columns;
-}
-
 function readProcessInfos(output: string) {
     const rows = output.split('\n').map(t => t.trim()).filter(t => t.length > 0);
     const headerRow = rows[0];
     const contentRows = rows.slice(1);
-    const header = parseProcessInfoHeader(headerRow);
-    const infos = contentRows.map(rowText => header.parseInfo(rowText));
+    const header = new ProcessInfoColumns();
+    header.parseHeader(headerRow);
+    const infos = contentRows.map(rowText => header.parseRow(rowText));
     return infos;
 }
 
