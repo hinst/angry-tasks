@@ -1,5 +1,3 @@
 <div>
-    <div v-for="process in dataProcesses" class="w3-panel w3-leftbar process-item">
-        {{process.name}}
-    </div>
+    <task-list-item v-for="process in dataProcesses" :prop-process="process"/>
 </div>

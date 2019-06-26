@@ -9,5 +9,4 @@ class AppComponent {
     el = '#app';
     template = fs.readFileSync('./src/app.html').toString();
 }
-
 new Vue(createVueComponent(new AppComponent()));

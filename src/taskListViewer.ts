@@ -1,7 +1,8 @@
 import * as Vue from 'vue/dist/vue.common.js';
 import { createVueComponent } from './vue';
 import * as fs from 'fs';
-import { ProcessReader, windowsCommand, ProcessInfo, Process } from './processReader';
+import { ProcessReader, windowsCommand, Process } from './processReader';
+import './taskListItem';
 
 class TaskListViewer {
     template = fs.readFileSync('./src/taskListViewer.html').toString();
