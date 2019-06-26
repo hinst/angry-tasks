@@ -8,14 +8,30 @@ export class Process {
     name: string;
     memory: number;
     processId: number;
+    parentProcessId: number;
     children: Process[] = [];
     copyInfo(info: ProcessInfo) {
         this.processId = info.ProcessId;
         this.name = info.Name;
         this.memory = info.PrivatePageCount;
+        this.parentProcessId = info.ParentProcessId;
     }
-    memoryToText() {
+    memoryToText(): string {
         return getReadableBytes(this.memory);
+    }
+    get totalMemory(): number {
+        let memory = this.memory;
+        for (const child of this.children)
+            memory += child.totalMemory;
+        return memory;
+    }
+    get totalMemoryText(): string {
+        return getReadableBytes(this.totalMemory);
+    }
+    static createFromInfo(info: ProcessInfo) {
+        const process = new Process();
+        process.copyInfo(info);
+        return process;
     }
 }
 
@@ -86,17 +102,16 @@ export class ProcessReader {
         return processes;
     }
     compose(infos: ProcessInfo[]) {
-        const processes: Process[] = [];
-        for (const info of infos) {
-            const process = new Process();
-            process.copyInfo(info);
-            const parentProcess = processes.find(p => p.processId == info.ParentProcessId);
+        const processes: Process[] = infos.map(info => Process.createFromInfo(info));
+        const processList: Process[] = [];
+        for (const process of processes) {
+            const parentProcess = processes.find(p => p.processId == process.parentProcessId);
             if (parentProcess != null)
                 parentProcess.children.push(process);
             else
-                processes.push(process);
+                processList.push(process);
         }
-        return processes;
+        return processList;
     }
 }
 
