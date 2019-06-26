@@ -1,11 +1,11 @@
 import * as Vue from 'vue/dist/vue.common.js';
 import { createVueComponent } from './vue';
 import * as fs from 'fs';
-import { ProcessReader, windowsCommand, ProcessInfo } from './processReader';
+import { ProcessReader, windowsCommand, ProcessInfo, Process } from './processReader';
 
 class TaskListViewer {
     template = fs.readFileSync('./src/taskListViewer.html').toString();
-    dataProcesses: ProcessInfo[] = [];
+    dataProcesses: Process[] = [];
     constructor() {
         console.log('command', windowsCommand);
         this.test();

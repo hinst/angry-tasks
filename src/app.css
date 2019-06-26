@@ -2,3 +2,8 @@ body {
     background-color: #002b36;
     color: #eee8d5;
 }
+
+.process-item {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}

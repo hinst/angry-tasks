@@ -1,12 +1,18 @@
 const { exec } = require('child_process');
 
 const windowsCommandTemplate = 'wmic process get $keys /format:csv';
+const windowsMemoryPageSize = 4 * 1024;
 
-class Process {
+export class Process {
     name: string;
     memory: number;
     processId: number;
-    children: Process[];
+    children: Process[] = [];
+    copyInfo(info: ProcessInfo) {
+        this.processId = info.ProcessId;
+        this.name = info.Name;
+        this.memory = info.PrivatePageCount * windowsMemoryPageSize;
+    }
 }
 
 export class ProcessInfo {
@@ -58,7 +64,7 @@ function simpleExec(command: string): Promise<string> {
     });
 }
 
-function readProcessInfos(output: string) {
+function parseProcessInfos(output: string) {
     const rows = output.split('\n').map(t => t.trim()).filter(t => t.length > 0);
     const headerRow = rows[0];
     const contentRows = rows.slice(1);
@@ -71,6 +77,21 @@ function readProcessInfos(output: string) {
 export class ProcessReader {
     async read() {
         const output = await simpleExec(windowsCommand);
-        return readProcessInfos(output);
+        const infos = parseProcessInfos(output);
+        const processes = this.compose(infos);
+        return processes;
+    }
+    compose(infos: ProcessInfo[]) {
+        const processes: Process[] = [];
+        for (const info of infos) {
+            const process = new Process();
+            process.copyInfo(info);
+            const parentProcess = processes.find(p => p.processId == info.ParentProcessId);
+            if (parentProcess != null)
+                parentProcess.children.push(process);
+            else
+                processes.push(process);
+        }
+        return processes;
     }
 }
