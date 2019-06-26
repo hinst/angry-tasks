@@ -1,9 +1,15 @@
 <div class="w3-panel w3-leftbar process-item">
     <!--{{propProcess.processId}}-->
     {{propProcess.name}}
-    <span style="background-color: black">
-        {{ propProcess.totalMemoryText }}
+    <span style="background-color: black; color: yellow">
+            {{ propProcess.memoryText }}
     </span>
+    <template v-if="propProcess.children.length > 0">
+        |
+        <span style="background-color: black">
+            {{ propProcess.totalMemoryText }}
+        </span>
+    </template>
     <div>
         <task-list-item v-for="childProcess in propProcess.children" :prop-process="childProcess"/>
     </div>

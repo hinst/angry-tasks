@@ -16,7 +16,7 @@ export class Process {
         this.memory = info.PrivatePageCount;
         this.parentProcessId = info.ParentProcessId;
     }
-    memoryToText(): string {
+    get memoryText(): string {
         return getReadableBytes(this.memory);
     }
     get totalMemory(): number {
