@@ -1,6 +1,7 @@
 const { exec } = require('child_process');
 
 const windowsCommandTemplate = 'wmic process get $keys /format:csv';
+/** Note: on my Windows 10, I get PrivatePageCount already in bytes, not in pages. */
 const windowsMemoryPageSize = 4 * 1024;
 
 export class Process {
@@ -11,7 +12,10 @@ export class Process {
     copyInfo(info: ProcessInfo) {
         this.processId = info.ProcessId;
         this.name = info.Name;
-        this.memory = info.PrivatePageCount * windowsMemoryPageSize;
+        this.memory = info.PrivatePageCount;
+    }
+    memoryToText() {
+        return getReadableBytes(this.memory);
     }
 }
 
@@ -94,4 +98,12 @@ export class ProcessReader {
         }
         return processes;
     }
+}
+
+/** source https://ourcodeworld.com/articles/read/713/converting-bytes-to-human-readable-values-kb-mb-gb-tb-pb-eb-zb-yb-with-javascript */
+function getReadableBytes(bytes: number) {
+    const i = Math.floor(Math.log(bytes) / Math.log(1024)),
+    sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    const x = (bytes / Math.pow(1024, i));
+    return x.toFixed(2) + ' ' + sizes[i];
 }
