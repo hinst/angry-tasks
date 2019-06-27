@@ -9,8 +9,9 @@
         <span style="background-color: black">
             {{ propProcess.totalMemoryText }}
         </span>
+        <button class="w3-btn w3-black"></button>
     </template>
-    <div>
+    <div :v-if="dataChildrenVisible">
         <task-list-item v-for="childProcess in propProcess.children" :prop-process="childProcess"/>
     </div>
 </div>

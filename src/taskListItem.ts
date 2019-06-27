@@ -5,6 +5,7 @@ import { createVueComponent } from './vue';
 
 class TaskListItem {
     template = fs.readFileSync('./src/taskListItem.html').toString();
-    propProcess: Process = new Process();
+    propProcess = new Process();
+    dataChildrenVisible = false;
 }
 Vue.component('task-list-item', createVueComponent(new TaskListItem()));
