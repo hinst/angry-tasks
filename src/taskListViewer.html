@@ -1,3 +1,10 @@
 <div>
-    <task-list-item v-for="process in dataProcesses" :prop-process="process"/>
+    <div>
+        <button v-on:click="refresh" class="w3-btn w3-black">
+            <i class="fas fa-sync"></i>
+        </button>
+    </div>
+    <div>
+        <task-list-item v-for="process in dataProcesses" :prop-process="process"/>
+    </div>
 </div>

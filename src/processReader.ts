@@ -104,6 +104,10 @@ export class ProcessReader {
         }
         return processList;
     }
+    async readMerge(oldProcesses: Process[]) {
+        const newProcesses = await this.read();
+        
+    }
 }
 
 /** source https://ourcodeworld.com/articles/read/713/converting-bytes-to-human-readable-values-kb-mb-gb-tb-pb-eb-zb-yb-with-javascript */

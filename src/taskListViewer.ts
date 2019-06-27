@@ -21,5 +21,8 @@ class TaskListViewer {
         const processes = await new ProcessReader().read();
         this.dataProcesses = processes;
     }
+    refresh() {
+        this.read();
+    }
 }
 Vue.component('task-list-viewer', createVueComponent(new TaskListViewer()))
