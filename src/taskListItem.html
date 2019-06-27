@@ -1,5 +1,8 @@
 <div class="w3-panel w3-leftbar process-item">
-    <!--{{propProcess.processId}}-->
+    <button v-if="propProcess.children.length > 0" v-on:click="dataChildrenVisible = !dataChildrenVisible" class="w3-btn w3-black">
+        <i v-if="dataChildrenVisible" class="fas fa-minus-circle"></i>
+        <i v-else class="fas fa-plus-circle"></i>
+    </button>
     {{propProcess.name}}
     <span style="background-color: black; color: yellow">
             {{ propProcess.memoryText }}
@@ -9,9 +12,8 @@
         <span style="background-color: black">
             {{ propProcess.totalMemoryText }}
         </span>
-        <button class="w3-btn w3-black"></button>
     </template>
-    <div :v-if="dataChildrenVisible">
+    <div v-if="dataChildrenVisible">
         <task-list-item v-for="childProcess in propProcess.children" :prop-process="childProcess"/>
     </div>
 </div>
