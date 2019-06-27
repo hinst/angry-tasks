@@ -5,17 +5,18 @@
   "main": "index.js",
   "dependencies": {
     "source-map-support": "^0.5.12",
-    "tsc": "^1.20150623.0",
-    "tslint": "^5.18.0",
-    "typescript": "^3.5.2",
     "vue": "^1.0.28-csp"
   },
   "devDependencies": {
     "electron": "^5.0.6",
-    "electron-packager": "^14.0.0"
+    "electron-packager": "^14.0.0",
+    "tsc": "^1.20150623.0",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.2"
   },
   "scripts": {
     "start": "electron .",
+    "build": "electron-packager . --ignore=\"src|tsconfig\\.json|\\.vscode\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

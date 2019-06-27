@@ -1,5 +1,4 @@
-const { exec } = require('child_process');
-
+import { execSync } from './execSync';
 const windowsCommandTemplate = 'wmic process get $keys /format:csv';
 /** Note: on my Windows 10, I get PrivatePageCount already in bytes, not in pages. */
 const windowsMemoryPageSize = 4 * 1024;
@@ -76,14 +75,6 @@ class ProcessInfoColumns extends BaseProcessInfoColumns {
 const processInfoKeysText = processInfoKeys.join(',');
 export const windowsCommand = windowsCommandTemplate.replace('$keys', processInfoKeysText);
 
-function simpleExec(command: string): Promise<string> {
-    return new Promise((resolve, reject) => {
-        const process = exec(command, (err, stdout, stderr) => {
-            resolve(stdout);
-        });
-    });
-}
-
 function parseProcessInfos(output: string) {
     const rows = output.split('\n').map(t => t.trim()).filter(t => t.length > 0);
     const headerRow = rows[0];
@@ -96,7 +87,7 @@ function parseProcessInfos(output: string) {
 
 export class ProcessReader {
     async read() {
-        const output = await simpleExec(windowsCommand);
+        const output = await execSync(windowsCommand);
         const infos = parseProcessInfos(output);
         const processes = this.compose(infos);
         return processes;
