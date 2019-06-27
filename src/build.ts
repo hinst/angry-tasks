@@ -8,8 +8,10 @@ async function buildExec(command) {
 }
 async function main() {
     //await buildExec(`dir`);
-    await buildExec(`del /Q /S ${targetFolder}`);
+    try {
+        await buildExec(`rmdir /Q /S ${targetFolder}`);
+    } catch (ignored) {}
     await buildExec(`node_modules\\.bin\\electron-packager . --ignore="src|tsconfig\\.json|\\.vscode"`);
-    //await buildExec(`xcopy src\\*.html angry-tasks-win32-x64\\src`);
+    await buildExec(`xcopy src\\*.html angry-tasks-win32-x64\\src\\`);
 }
 main();
