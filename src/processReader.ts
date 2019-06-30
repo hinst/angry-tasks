@@ -37,11 +37,16 @@ export class Process {
         return process;
     }
     updateFrom(other: Process) {
-        this.name = other.name;
-        this.memory = other.memory;
-        this.processId = other.processId;
-        this.parentProcessId = other.parentProcessId;
-        this.executablePath = other.executablePath;
+        if (this.name != other.name)
+            this.name = other.name;
+        if (this.memory != other.memory)
+            this.memory = other.memory;
+        if (this.processId != other.processId)
+            this.processId = other.processId;
+        if (this.parentProcessId != other.parentProcessId)
+            this.parentProcessId = other.parentProcessId;
+        if (this.executablePath != other.executablePath)
+            this.executablePath = other.executablePath;
         Processes.updateMerge(this.children, other.children);
     }
 }
