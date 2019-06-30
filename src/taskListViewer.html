@@ -5,6 +5,6 @@
         </button>
     </div>
     <div>
-        <task-list-item v-for="process in dataProcesses" :prop-process="process"/>
+        <task-list-item v-for="process in dataProcesses" v-bind:key="process.processId" :prop-process="process"/>
     </div>
 </div>

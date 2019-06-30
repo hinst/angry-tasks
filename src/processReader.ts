@@ -1,4 +1,6 @@
 import { execSync } from './execSync';
+import { getReadableBytes } from './format';
+
 const windowsCommandTemplate = 'wmic process get $keys /format:csv';
 /** Note: on my Windows 10, I get PrivatePageCount already in bytes, not in pages. */
 const windowsMemoryPageSize = 4 * 1024;
@@ -31,6 +33,26 @@ export class Process {
         const process = new Process();
         process.copyInfo(info);
         return process;
+    }
+}
+
+class Processes {
+    static parseInfos(output: string) {
+        const rows = output.split('\n').map(t => t.trim()).filter(t => t.length > 0);
+        const headerRow = rows[0];
+        const contentRows = rows.slice(1);
+        const header = new ProcessInfoColumns();
+        header.parseHeader(headerRow);
+        const infos = contentRows.map(rowText => header.parseRow(rowText));
+        return infos;
+    }
+    static merge(oldProcesses: Process[], newProcesses: Process[]) {
+        const additions = newProcesses.filter(p => oldProcesses.filter(oldProcess => oldProcess.processId == p.processId).length == 0);
+        const deletions = oldProcesses.filter(oldProcess => newProcesses.filter(newProcess => newProcess.processId == oldProcess.processId).length == 0);
+        for (const addition of additions) {
+            const index = additions.indexOf(addition);
+            oldProcesses.splice(index, 0, addition);
+        }
     }
 }
 
@@ -75,20 +97,10 @@ class ProcessInfoColumns extends BaseProcessInfoColumns {
 const processInfoKeysText = processInfoKeys.join(',');
 export const windowsCommand = windowsCommandTemplate.replace('$keys', processInfoKeysText);
 
-function parseProcessInfos(output: string) {
-    const rows = output.split('\n').map(t => t.trim()).filter(t => t.length > 0);
-    const headerRow = rows[0];
-    const contentRows = rows.slice(1);
-    const header = new ProcessInfoColumns();
-    header.parseHeader(headerRow);
-    const infos = contentRows.map(rowText => header.parseRow(rowText));
-    return infos;
-}
-
 export class ProcessReader {
     async read() {
         const output = await execSync(windowsCommand);
-        const infos = parseProcessInfos(output);
+        const infos = Processes.parseInfos(output);
         const processes = this.compose(infos);
         return processes;
     }
@@ -106,14 +118,6 @@ export class ProcessReader {
     }
     async readMerge(oldProcesses: Process[]) {
         const newProcesses = await this.read();
-        
     }
 }
 
-/** source https://ourcodeworld.com/articles/read/713/converting-bytes-to-human-readable-values-kb-mb-gb-tb-pb-eb-zb-yb-with-javascript */
-function getReadableBytes(bytes: number) {
-    const i = Math.floor(Math.log(bytes) / Math.log(1024)),
-    sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-    const x = (bytes / Math.pow(1024, i));
-    return x.toFixed(2) + ' ' + sizes[i];
-}
