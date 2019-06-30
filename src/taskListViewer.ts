@@ -8,18 +8,16 @@ class TaskListViewer {
     template = fs.readFileSync('./src/taskListViewer.html').toString();
     dataProcesses: Process[] = [];
     constructor() {
-        console.log('command', windowsCommand);
-        this.test();
-    }
-    async test() {
-        console.log(await new ProcessReader().read());
     }
     created() {
         this.read();
+        setInterval(() => this.read(), 2000);
     }
     async read() {
+        console.time('read');
         const processes = await new ProcessReader().read();
         Processes.updateMerge(this.dataProcesses, processes);
+        console.timeEnd('read');
     }
     refresh() {
         this.read();

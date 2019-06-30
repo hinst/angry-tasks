@@ -1,4 +1,4 @@
-import { execSync } from './execSync';
+import { simpleExec as simpleExec } from './simpleExec';
 import { getReadableBytes } from './format';
 
 const windowsCommandTemplate = 'wmic process get $keys /format:csv';
@@ -145,7 +145,9 @@ export const windowsCommand = windowsCommandTemplate.replace('$keys', processInf
 
 export class ProcessReader {
     async read() {
-        const output = await execSync(windowsCommand);
+        console.time('wimc');
+        const output = await simpleExec(windowsCommand);
+        console.timeEnd('wimc');
         const infos = Processes.parseInfos(output);
         const processes = this.compose(infos);
         return processes;

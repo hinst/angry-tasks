@@ -1,9 +1,9 @@
-import { execSync } from './execSync';
+import { simpleExec } from './simpleExec';
 
 const targetFolder = 'angry-tasks-win32-x64';
 async function buildExec(command) {
     console.log("> " + command);
-    const output = await execSync(command);
+    const output = await simpleExec(command);
     console.log(output);
 }
 async function main() {
