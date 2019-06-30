@@ -1,5 +1,5 @@
 # AngryTasks
-A task manager app for Widnows. 
+A task manager app for Windows. 
 
 * has dark UI theme
 * sums up memory usage of child processes
