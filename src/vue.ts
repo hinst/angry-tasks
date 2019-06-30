@@ -4,6 +4,7 @@ export class VueComponentObject {
     template: string;
     created: Function;
     props: string[] = [];
+    computed: {};
     data = () => {};
     methods = {};
     mixins: any;
@@ -18,6 +19,8 @@ export function createVueComponent(instance: any) {
         }
         if (propKey.startsWith('data'))
             data[propKey] = instance[propKey];
+        if (propKey.startsWith('comp'))
+            component.computed = instance[propKey];
     }
     component.data = () => Object.assign({}, data);
     const proto = Object.getPrototypeOf(instance);

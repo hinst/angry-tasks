@@ -7,5 +7,9 @@ class TaskListItem {
     template = fs.readFileSync('./src/taskListItem.html').toString();
     propProcess = new Process();
     dataChildrenVisible = false;
+    compExecutablePath() {
+        const path = this.propProcess.executablePath;
+        return path.length > 0 ? path : '(unavailable)';
+    }
 }
 Vue.component('task-list-item', createVueComponent(new TaskListItem()));

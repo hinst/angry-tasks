@@ -10,7 +10,9 @@ class TaskListViewer {
     constructor() {
     }
     created() {
+        console.log(windowsCommand);
         this.read();
+        console.log(this.dataProcesses);
         setInterval(() => this.read(), 2000);
     }
     async read() {

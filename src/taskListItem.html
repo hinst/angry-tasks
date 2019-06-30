@@ -7,7 +7,7 @@
         <i v-if="dataChildrenVisible" class="fas fa-minus-circle"></i>
         <i v-else class="fas fa-plus-circle"></i>
     </button>
-    {{propProcess.name}}
+    <span :title="compExecutablePath()">{{propProcess.name}}</span>
     <span style="background-color: black; color: yellow">
             {{ propProcess.memoryText }}
     </span>

@@ -11,11 +11,13 @@ export class Process {
     processId: number;
     parentProcessId: number;
     children: Process[] = [];
+    executablePath: string;
     copyInfo(info: ProcessInfo) {
         this.processId = info.ProcessId;
         this.name = info.Name;
         this.memory = info.PrivatePageCount;
         this.parentProcessId = info.ParentProcessId;
+        this.executablePath = info.ExecutablePath;
     }
     get memoryText(): string {
         return getReadableBytes(this.memory);
@@ -34,11 +36,12 @@ export class Process {
         process.copyInfo(info);
         return process;
     }
-    update(other: Process) {
+    updateFrom(other: Process) {
         this.name = other.name;
         this.memory = other.memory;
         this.processId = other.processId;
         this.parentProcessId = other.parentProcessId;
+        this.executablePath = other.executablePath;
         Processes.updateMerge(this.children, other.children);
     }
 }
@@ -85,7 +88,7 @@ export class Processes {
         for (const oldProcess of oldProcesses) {
             const newProcess = newMap['' + oldProcess.processId];
             if (newProcess != null)
-                oldProcess.update(newProcess);
+                oldProcess.updateFrom(newProcess);
             else
                 console.error("Can't find new process for", oldProcess);
         }
@@ -94,10 +97,11 @@ export class Processes {
 
 export class ProcessInfo {
     ProcessId: number = 0;
-    Name: string = '';
+    Name: string = null;
     ParentProcessId: number = 0;
     PrivatePageCount: number = 0;
     UserModeTime: number = 0;
+    ExecutablePath: string = null;
 }
 const processInfoKeys = Object.keys(new ProcessInfo());
 const processInfoKeysText = processInfoKeys.join(',');
@@ -110,6 +114,7 @@ class BaseProcessInfoColumns {
     ParentProcessId: number = -1;
     PrivatePageCount: number = -1;
     UserModeTime: number = -1;
+    ExecutablePath: number = -1;
 }
 const baseProcessInfoColumnsKeys = Object.keys(new BaseProcessInfoColumns());
 
@@ -128,6 +133,7 @@ class ProcessInfoColumns extends BaseProcessInfoColumns {
         info.ParentProcessId = parseInt(cells[this.ParentProcessId]);
         info.PrivatePageCount = parseInt(cells[this.PrivatePageCount]);
         info.UserModeTime = parseInt(cells[this.UserModeTime]);
+        info.ExecutablePath = cells[this.ExecutablePath];
         return info;
     }
 }
