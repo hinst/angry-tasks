@@ -100,6 +100,8 @@ export class ProcessInfo {
     UserModeTime: number = 0;
 }
 const processInfoKeys = Object.keys(new ProcessInfo());
+const processInfoKeysText = processInfoKeys.join(',');
+export const windowsCommand = windowsCommandTemplate.replace('$keys', processInfoKeysText);
 
 /** Indexes of CSV cells */
 class BaseProcessInfoColumns {
@@ -130,14 +132,9 @@ class ProcessInfoColumns extends BaseProcessInfoColumns {
     }
 }
 
-const processInfoKeysText = processInfoKeys.join(',');
-export const windowsCommand = windowsCommandTemplate.replace('$keys', processInfoKeysText);
-
 export class ProcessReader {
     async read() {
-        console.time('wimc');
         const output = await simpleExec(windowsCommand);
-        console.timeEnd('wimc');
         const infos = Processes.parseInfos(output);
         const processes = this.compose(infos);
         return processes;
