@@ -43,16 +43,6 @@ export class Process {
     }
 }
 
-class IndexedProcess {
-    process: Process;
-    index: number;
-    exists: boolean;
-    constructor(process: Process, index: number) {
-        this.process = process;
-        this.index = index;
-    }
-}
-
 type ProcessMap = {[key: string]: Process};
 
 export class Processes {

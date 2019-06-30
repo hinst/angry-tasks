@@ -23,4 +23,4 @@ class TaskListViewer {
         this.read();
     }
 }
-Vue.component('task-list-viewer', createVueComponent(new TaskListViewer()))
+Vue.component('task-list-viewer', createVueComponent(new TaskListViewer()));
