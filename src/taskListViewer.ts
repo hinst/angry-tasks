@@ -1,7 +1,7 @@
 import * as Vue from 'vue/dist/vue.common.js';
 import { createVueComponent } from './vue';
 import * as fs from 'fs';
-import { ProcessReader, windowsCommand, Process } from './processReader';
+import { ProcessReader, windowsCommand, Process, Processes } from './processReader';
 import './taskListItem';
 
 class TaskListViewer {
@@ -19,7 +19,7 @@ class TaskListViewer {
     }
     async read() {
         const processes = await new ProcessReader().read();
-        this.dataProcesses = processes;
+        Processes.updateMerge(this.dataProcesses, processes);
     }
     refresh() {
         this.read();

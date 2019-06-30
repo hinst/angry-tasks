@@ -55,7 +55,7 @@ class IndexedProcess {
 
 type ProcessMap = {[key: string]: Process};
 
-class Processes {
+export class Processes {
     static parseInfos(output: string) {
         const rows = output.split('\n').map(t => t.trim()).filter(t => t.length > 0);
         const headerRow = rows[0];
@@ -75,8 +75,8 @@ class Processes {
         const newMap = Processes.toMap(newProcesses);
         const deletions: number[] = [];
         for (let i = 0; i < oldProcesses.length; i++) {
-            const process = oldProcesses[i];
-            const isDeleted = newMap['' + process.processId] == null;
+            const oldProcess = oldProcesses[i];
+            const isDeleted = newMap['' + oldProcess.processId] == null;
             if (isDeleted)
                 deletions.push(i);
         }
@@ -93,8 +93,11 @@ class Processes {
         }
 
         for (const oldProcess of oldProcesses) {
-            const newProcess = newMap['' + oldProcess];
-            oldProcess.update(newProcess);
+            const newProcess = newMap['' + oldProcess.processId];
+            if (newProcess != null)
+                oldProcess.update(newProcess);
+            else
+                console.error("Can't find new process for", oldProcess);
         }
     }
 }
@@ -158,9 +161,6 @@ export class ProcessReader {
                 processList.push(process);
         }
         return processList;
-    }
-    async readMerge(oldProcesses: Process[]) {
-        const newProcesses = await this.read();
     }
 }
 
