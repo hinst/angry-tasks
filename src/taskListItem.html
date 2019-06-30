@@ -1,5 +1,9 @@
 <div class="w3-panel w3-leftbar process-item">
-    <button v-if="propProcess.children.length > 0" v-on:click="dataChildrenVisible = !dataChildrenVisible" class="w3-btn w3-black">
+    <button 
+        v-on:click="dataChildrenVisible = !dataChildrenVisible"
+        class="w3-btn w3-black"
+        v-bind:style="{visibility: propProcess.children.length > 0 ? 'visible' : 'hidden'}"
+    >
         <i v-if="dataChildrenVisible" class="fas fa-minus-circle"></i>
         <i v-else class="fas fa-plus-circle"></i>
     </button>

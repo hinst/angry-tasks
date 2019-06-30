@@ -34,7 +34,26 @@ export class Process {
         process.copyInfo(info);
         return process;
     }
+    update(other: Process) {
+        this.name = other.name;
+        this.memory = other.memory;
+        this.processId = other.processId;
+        this.parentProcessId = other.parentProcessId;
+        Processes.updateMerge(this.children, other.children);
+    }
 }
+
+class IndexedProcess {
+    process: Process;
+    index: number;
+    exists: boolean;
+    constructor(process: Process, index: number) {
+        this.process = process;
+        this.index = index;
+    }
+}
+
+type ProcessMap = {[key: string]: Process};
 
 class Processes {
     static parseInfos(output: string) {
@@ -46,12 +65,36 @@ class Processes {
         const infos = contentRows.map(rowText => header.parseRow(rowText));
         return infos;
     }
-    static merge(oldProcesses: Process[], newProcesses: Process[]) {
-        const additions = newProcesses.filter(p => oldProcesses.filter(oldProcess => oldProcess.processId == p.processId).length == 0);
-        const deletions = oldProcesses.filter(oldProcess => newProcesses.filter(newProcess => newProcess.processId == oldProcess.processId).length == 0);
-        for (const addition of additions) {
-            const index = additions.indexOf(addition);
-            oldProcesses.splice(index, 0, addition);
+    static toMap(processes: Process[]): ProcessMap {
+        const map: ProcessMap = {};
+        for (const process of processes)
+            map['' + process.processId] = process;
+        return map;
+    }
+    static updateMerge(oldProcesses: Process[], newProcesses: Process[]) {
+        const newMap = Processes.toMap(newProcesses);
+        const deletions: number[] = [];
+        for (let i = 0; i < oldProcesses.length; i++) {
+            const process = oldProcesses[i];
+            const isDeleted = newMap['' + process.processId] == null;
+            if (isDeleted)
+                deletions.push(i);
+        }
+        for (let i = deletions.length - 1; i >= 0; i--) {
+            oldProcesses.splice(deletions[i], 1);
+        }
+
+        const oldMap = Processes.toMap(oldProcesses);
+        for (let i = 0; i < newProcesses.length; i++) {
+            const newProcess = newProcesses[i];
+            const isInserted = oldMap['' + newProcess.processId] == null;
+            if (isInserted)
+                oldProcesses.splice(i, 0, newProcess);
+        }
+
+        for (const oldProcess of oldProcesses) {
+            const newProcess = newMap['' + oldProcess];
+            oldProcess.update(newProcess);
         }
     }
 }
