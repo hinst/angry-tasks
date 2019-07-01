@@ -1,5 +1,5 @@
 # AngryTasks
-A task manager app for Windows. Download for Windows x64 is available in [Releases](./releases)
+A task manager app for Windows. Download for Windows x64 is available in [Releases](../../releases)
 
 ![screenshot](screenshot.png?raw=true "AngryTasks 0.2")
 
