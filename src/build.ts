@@ -13,7 +13,7 @@ async function main() {
     } catch (e) {
         console.log('Could not delete target folder');
     }
-    const ignored = `--ignore="src|tsconfig\\.json|\\.vscode|${targetFolder}\\.zip|${targetFolder}"`;
+    const ignored = `--ignore="src|tsconfig\\.json|\\.vscode|${targetFolder}\\.zip|${targetFolder}|third-ref"`;
     await buildExec(`node_modules\\.bin\\electron-packager . ${ignored} --app-copyright="Alexander Savinykh, 2019"`);
     await buildExec(`xcopy src\\*.html angry-tasks-win32-x64\\src\\`);
     await buildExec(`xcopy src\\*.css angry-tasks-win32-x64\\resources\\app\\src\\`);
