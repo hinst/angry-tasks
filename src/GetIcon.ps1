@@ -1,0 +1,10 @@
+[console]::InputEncoding=[console]::OutputEncoding=New-Object System.Text.UTF8Encoding;
+Add-Type -AssemblyName System.Drawing;
+$Icon = [System.Drawing.Icon]::ExtractAssociatedIcon($1);
+$Format = [System.Drawing.Imaging.ImageFormat]::Png;
+$MemoryStream = New-Object System.IO.MemoryStream;
+$Icon.ToBitmap().Save($MemoryStream, $Format);
+$Bytes = $MemoryStream.ToArray();
+$MemoryStream.Flush();
+$MemoryStream.Dispose();
+[convert]::ToBase64String($Bytes);

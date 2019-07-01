@@ -15,7 +15,7 @@ export function simpleExecWithInput(command: string, input: string): Promise<str
     return new Promise((resolve, reject) => {
         const process = spawn(command);
         process.stdin.write(input);
-        process.stdin.write('\n');
+        process.stdin.end();
         const outputArray: string[] = [];
         process.stdout.on('data', data => {
             outputArray.push(data.toString());

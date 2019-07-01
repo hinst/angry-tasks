@@ -3,6 +3,8 @@ import { createVueComponent } from './vue';
 import * as fs from 'fs';
 import { ProcessReader, windowsCommand, Process, Processes } from './processReader';
 import './taskListItem';
+import './iconManager';
+import { IconManager } from './iconManager';
 
 class TaskListViewer {
     template = fs.readFileSync('./src/taskListViewer.html').toString();
@@ -14,6 +16,8 @@ class TaskListViewer {
         this.read();
         console.log(this.dataProcesses);
         setInterval(() => this.read(), 2000);
+
+        new IconManager().loadImage('C:/Program Files/Mozilla Firefox/firefox.exe');
     }
     async read() {
         const processes = await new ProcessReader().read();

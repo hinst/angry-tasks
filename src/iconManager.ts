@@ -1,11 +1,14 @@
-import { simpleExec } from "./simpleExec";
+import { simpleExec, simpleExecWithInput } from "./simpleExec";
 
 const fs = require('fs');
-const iconFunctionScript = fs.readFileSync('third/Get-Icon.ps1');
-const iconCommand = "Get-Icon -Path 'C:/windows/system32/WindowsPowerShell/v1.0/PowerShell.exe' -ToBase64";
+const iconScript: string = fs.readFileSync('src/GetIcon.ps1').toString();
+const iconScriptLine = iconScript.split('\n').map(line => line.trim()).join('');
 
-class IconManager {
+export class IconManager {
     async loadImage(path: string) {
-        simpleExec('PowerShell '
+        const scriptLine = iconScriptLine.replace('$1', '\'' + path + '\'');
+        console.log(scriptLine);
+        const output = await simpleExec('PowerShell ' + scriptLine);
+        console.log(output);
     }
 }
