@@ -3,7 +3,12 @@ A task manager app for Windows. Download for Windows x64 is available in [Releas
 
 ![screenshot](screenshot.png?raw=true "AngryTasks 0.2")
 
+Features:
 * has dark UI theme
 * sums up memory usage of child processes
-* uses Electron & Node.js, Vue, TypeScript.
+
+Development
+* written in TypeScript
+* uses Electron & Node.js
+* uses Vue,
 
