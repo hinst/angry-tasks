@@ -17,7 +17,7 @@ async function main() {
     await buildExec(`node_modules\\.bin\\electron-packager . ${ignored} --app-copyright="Alexander Savinykh, 2019"`);
     await buildExec(`xcopy src\\*.html angry-tasks-win32-x64\\src\\`);
     await buildExec(`xcopy src\\*.css angry-tasks-win32-x64\\resources\\app\\src\\`);
-    await buildExec(`xcopy third angry-tasks-win32-x64\\`);
+    await buildExec(`xcopy third angry-tasks-win32-x64\\third\\`);
 
     await buildExec(`del ${targetFolder}.zip`);
     await buildExec(`"C:\\Program Files\\7-Zip\\7z.exe" a -tzip -bd ${targetFolder} ${targetFolder}`);
