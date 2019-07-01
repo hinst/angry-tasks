@@ -8,3 +8,21 @@ body {
     margin-bottom: 4px;
     padding-left: 4px;
 }
+
+.angry-tasks-icon {
+    
+}
+
+.angry-tasks-cog {
+    font-size: 22px;
+    min-height: 30px;
+    display: inline-block;
+}
+
+.angry-tasks-span30 {
+    max-width: 31px;
+    min-width: 31px;
+    max-height: 31px;
+    min-height: 31px;
+    display: inline-block;
+}
