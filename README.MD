@@ -9,7 +9,7 @@ Features:
 
 Can fold, unfold process tree nodes. The tree is refreshed every 2 seconds. 
 
-Development
+Development:
 * written in TypeScript
 * uses Electron & Node.js
 * uses Vue
