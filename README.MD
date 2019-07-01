@@ -10,5 +10,4 @@ Features:
 Development
 * written in TypeScript
 * uses Electron & Node.js
-* uses Vue,
-
+* uses Vue
